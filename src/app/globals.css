@@ -1,26 +1,386 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Brand Palette Colors */
+    --color-black: #111111;
+    --color-gold: #FFA800;
+    --color-gold-hover: #FFB82E;
+    --color-surface: #F8F9FA;
+    --color-surface-card: #FFFFFF;
+    --color-border: #E2E8F0;
+    --color-slate: #6C757D;
+    --color-white: #FFFFFF;
+
+    /* Base theme defaults — LIGHT MODE */
+    --background: #F8F9FA;
+    --foreground: #111111;
+    --card: #FFFFFF;
+    --card-foreground: #111111;
+    --popover: #FFFFFF;
+    --popover-foreground: #111111;
+    --primary: #FFA800;
+    --primary-foreground: #000000;
+    --secondary: #F1F3F5;
+    --secondary-foreground: #111111;
+    --muted: #E9ECEF;
+    --muted-foreground: #6C757D;
+    --accent: #FFA800;
+    --accent-foreground: #000000;
+    --destructive: #D31A26;
+    --destructive-foreground: #FFFFFF;
+    --border: #E2E8F0;
+    --input: #EDF2F7;
+    --ring: #FFA800;
+    --radius: 0.875rem;
+  }
+
+  .dark {
+    --color-surface: #181818;
+    --color-surface-card: #1E1E1E;
+    --color-border: #2E2E2E;
+    --color-slate: #7E7E7E;
+
+    /* Base theme defaults — DARK MODE */
+    --background: #111111;
+    --foreground: #FFFFFF;
+    --card: #181818;
+    --card-foreground: #FFFFFF;
+    --popover: #1E1E1E;
+    --popover-foreground: #FFFFFF;
+    --primary: #FFA800;
+    --primary-foreground: #000000;
+    --secondary: #222222;
+    --secondary-foreground: #FFFFFF;
+    --muted: #1E1E1E;
+    --muted-foreground: #A5A5A5;
+    --accent: #FFA800;
+    --accent-foreground: #000000;
+    --destructive: #D31A26;
+    --destructive-foreground: #FFFFFF;
+    --border: #2E2E2E;
+    --input: #262626;
+    --ring: #FFA800;
+  }
+}
+
+/* Lenis handles smooth scrolling; avoid native scroll-behavior conflict */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.font-serif {
+  font-family: 'Newsreader', 'Playfair Display', Georgia, Cambria, serif;
+}
+
+/* === 3D IMMERSIVE EFFECTS === */
+
+/* Ambient red glow */
+.glow-red {
+  box-shadow: 0 0 40px -8px rgba(211, 26, 38, 0.4), 0 0 80px -20px rgba(211, 26, 38, 0.2);
+}
+
+.glow-red-sm {
+  box-shadow: 0 0 20px -4px rgba(211, 26, 38, 0.3);
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(21, 21, 24, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(221, 214, 198, 0.15);
+}
+
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #E4DFD3;
+}
+
+/* 3D depth surface */
+.surface-3d {
+  background: #151518;
+  border: 1px solid #26272C;
+}
+
+.surface-3d-light {
+  background: #FFFFFF;
+  border: 1px solid #E4DFD3;
+}
+
+/* Hero gradient */
+.hero-gradient {
+  background: radial-gradient(ellipse at 25% 45%, rgba(211, 26, 38, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 25%, rgba(221, 214, 198, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(211, 26, 38, 0.08) 0%, transparent 60%);
+}
+
+.hero-gradient-light {
+  background: radial-gradient(ellipse at 25% 45%, rgba(211, 26, 38, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 25%, rgba(221, 214, 198, 0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(240, 236, 227, 0.5) 0%, transparent 60%);
+}
+
+/* Floating animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Grid dot background */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(110, 115, 123, 0.15) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.dark .dot-grid {
+  background-image: radial-gradient(circle, rgba(221, 214, 198, 0.06) 1px, transparent 1px);
+}
+
+/* Section separator line */
+.section-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(211, 26, 38, 0.35), transparent);
+}
+
+.dark .section-line {
+  background: linear-gradient(to right, transparent, rgba(211, 26, 38, 0.3), transparent);
+}
+
+/* Outlined Theme Button with high-contrast black text on hover */
+.btn-theme-outline {
+  border-color: var(--theme-color, #FFA800);
+  color: var(--theme-color, #FFA800);
+  background-color: transparent;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-theme-outline:hover {
+  background-color: var(--theme-color, #FFA800) !important;
+  color: #000000 !important;
+}
+
+.btn-theme-outline:hover svg {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+/* Hover lift 3D */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Smooth Professional Page Transition (Gradual, luxury glide) */
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(60px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-slide-right {
+  opacity: 0;
+  animation: slideInRight 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Smooth Entrance from Sidebar (Left-to-Right luxury glide) */
+@keyframes slideFromSidebar {
+  0% {
+    opacity: 0;
+    transform: translate3d(-48px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-slide-from-sidebar {
+  opacity: 0;
+  animation: slideFromSidebar 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* Slide drawer from right (Detail panel) */
+@keyframes slideDrawerRight {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-drawer-right {
+  animation: slideDrawerRight 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Mobile Nav Drawer — slides up from bottom (0% → 100%) */
+@keyframes slideUpFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scaleY(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUpFromBottom 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: bottom right;
+}
+
+/* Vertical Pill Drop & Expand Animation (0% to 100%) */
+@keyframes pillDropExpand {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0 round 9999px);
+    transform: translateY(-10px) scaleY(0.6);
+  }
+
+  100% {
+    opacity: 1;
+    clip-path: inset(0 0 0% 0 round 9999px);
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.animate-pill-drop {
+  transform-origin: top center;
+  animation: pillDropExpand 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Nav Text Label Smooth Reveal from behind pill */
+@keyframes labelSlideReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-label-reveal {
+  animation: labelSlideReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Gold glow effect */
+.glow-gold {
+  box-shadow: 0 0 35px -6px rgba(255, 168, 0, 0.4), 0 0 70px -15px rgba(255, 168, 0, 0.2);
+}
+
+.glow-gold-sm {
+  box-shadow: 0 0 18px -4px rgba(255, 168, 0, 0.35);
+}
+
+/* Hover gold glow */
+.hover-gold-glow {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hover-gold-glow:hover {
+  border-color: rgba(255, 168, 0, 0.7);
+  box-shadow: 0 0 25px -6px rgba(255, 168, 0, 0.35);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background, #111111);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border, #2E2E2E);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary, #FFA800);
+}
+
+/* Hide scrollbar while keeping scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
 }
