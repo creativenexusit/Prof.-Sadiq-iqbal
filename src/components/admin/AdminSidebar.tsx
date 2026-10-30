@@ -35,12 +35,12 @@ interface AdminSidebarProps {
 export default function AdminSidebar({
   adminEmail = 'sadiq.iqbal@bu.edu.bd',
   fullName = 'Prof. Sadiq Iqbal',
-  themeColor = { hex: '#FFA800', name: 'Amber Gold', hoverHex: '#FFB82E' },
+  themeColor = { hex: '#0EA5E9', name: 'Sky Blue', hoverHex: '#0284C7' },
 }: AdminSidebarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
-  const activeColor = themeColor.hex || '#FFA800';
+  const activeColor = themeColor.hex || '#0EA5E9';
 
   const navItems = [
     {

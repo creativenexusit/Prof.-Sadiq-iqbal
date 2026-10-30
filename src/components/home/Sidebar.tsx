@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { Menu, X } from 'lucide-react';
 
@@ -27,8 +28,8 @@ export default function Sidebar({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<HTMLButtonElement[]>([]);
-  const labelsRef = useRef<HTMLButtonElement[]>([]);
+  const itemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  const labelsRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   // Fast & snappy GSAP animation (no sluggish delay)
@@ -188,17 +189,19 @@ export default function Sidebar({
             {activeItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
+              const targetHref = item.href || (item.id === 'home' ? '/' : `/${item.id}`);
 
               return (
-                <button
+                <Link
                   key={item.id}
+                  href={targetHref}
+                  prefetch={true}
                   ref={(el) => {
-                    if (el) itemsRef.current[index] = el;
+                    itemsRef.current[index] = el;
                   }}
-                  type="button"
                   tabIndex={isOpen ? 0 : -1}
                   onClick={() => {
-                    handleTabChange(item.href || item.id);
+                    handleTabChange(targetHref);
                   }}
                   title={item.label}
                   aria-label={item.label}
@@ -214,7 +217,7 @@ export default function Sidebar({
                   }
                 >
                   <Icon size={15} />
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -226,16 +229,19 @@ export default function Sidebar({
         <div data-lenis-prevent className="flex flex-col pt-[64px]">
           {activeItems.map((item, index) => {
             const isActive = activeTab === item.id;
+            const targetHref = item.href || (item.id === 'home' ? '/' : `/${item.id}`);
+
             return (
-              <button
+              <Link
                 key={item.id}
+                href={targetHref}
+                prefetch={true}
                 ref={(el) => {
-                  if (el) labelsRef.current[index] = el;
+                  labelsRef.current[index] = el;
                 }}
-                type="button"
                 tabIndex={isOpen ? 0 : -1}
                 onClick={() => {
-                  handleTabChange(item.href || item.id);
+                  handleTabChange(targetHref);
                 }}
                 className={`h-8 mb-2.5 last:mb-0 flex items-center px-1 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer whitespace-nowrap ${
                   isActive
@@ -245,7 +251,7 @@ export default function Sidebar({
                 style={isActive ? { color: themeColor.hex } : undefined}
               >
                 {item.label}
-              </button>
+              </Link>
             );
           })}
         </div>

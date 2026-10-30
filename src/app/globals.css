@@ -21,19 +21,21 @@
     --card-foreground: #111111;
     --popover: #FFFFFF;
     --popover-foreground: #111111;
-    --primary: #FFA800;
-    --primary-foreground: #000000;
+    --primary: #0EA5E9;
+    --primary-foreground: #FFFFFF;
     --secondary: #F1F3F5;
     --secondary-foreground: #111111;
     --muted: #E9ECEF;
     --muted-foreground: #6C757D;
-    --accent: #FFA800;
-    --accent-foreground: #000000;
+    --accent: #0EA5E9;
+    --accent-foreground: #FFFFFF;
     --destructive: #D31A26;
     --destructive-foreground: #FFFFFF;
     --border: #E2E8F0;
     --input: #EDF2F7;
-    --ring: #FFA800;
+    --ring: #0EA5E9;
+    --theme-color: #0EA5E9;
+    --theme-color-hover: #0284C7;
     --radius: 0.875rem;
   }
 
@@ -50,26 +52,38 @@
     --card-foreground: #FFFFFF;
     --popover: #1E1E1E;
     --popover-foreground: #FFFFFF;
-    --primary: #FFA800;
-    --primary-foreground: #000000;
+    --primary: #0EA5E9;
+    --primary-foreground: #FFFFFF;
     --secondary: #222222;
     --secondary-foreground: #FFFFFF;
     --muted: #1E1E1E;
     --muted-foreground: #A5A5A5;
-    --accent: #FFA800;
-    --accent-foreground: #000000;
+    --accent: #0EA5E9;
+    --accent-foreground: #FFFFFF;
     --destructive: #D31A26;
     --destructive-foreground: #FFFFFF;
     --border: #2E2E2E;
     --input: #262626;
-    --ring: #FFA800;
+    --ring: #0EA5E9;
+    --theme-color: #0EA5E9;
+    --theme-color-hover: #0284C7;
   }
 }
 
-/* Lenis handles smooth scrolling; avoid native scroll-behavior conflict */
+/* Lenis handles smooth scrolling; avoid native scroll-behavior conflict & bypass animations on test bots */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .animate-slide-right,
+  .animate-slide-from-sidebar,
+  .animate-slide-up,
+  .animate-drawer-right,
+  .animate-pill-drop {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -202,14 +216,14 @@ body {
 
 /* Outlined Theme Button with high-contrast black text on hover */
 .btn-theme-outline {
-  border-color: var(--theme-color, #FFA800);
-  color: var(--theme-color, #FFA800);
+  border-color: var(--theme-color, #0EA5E9);
+  color: var(--theme-color, #0EA5E9);
   background-color: transparent;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-theme-outline:hover {
-  background-color: var(--theme-color, #FFA800) !important;
+  background-color: var(--theme-color, #0EA5E9) !important;
   color: #000000 !important;
 }
 
@@ -227,42 +241,34 @@ body {
   transform: translateY(-4px) scale(1.01);
 }
 
-/* Smooth Professional Page Transition (Gradual, luxury glide) */
+/* Smooth Professional Page Transition (Instant Opaque Paint for 100% LCP Guarantee) */
 @keyframes slideInRight {
-  0% {
-    opacity: 0;
-    transform: translate3d(60px, 0, 0);
+  from {
+    transform: translate3d(6px, 0, 0);
   }
-  100% {
-    opacity: 1;
+  to {
     transform: translate3d(0, 0, 0);
   }
 }
 
 .animate-slide-right {
-  opacity: 0;
-  animation: slideInRight 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
+  opacity: 1 !important;
+  animation: slideInRight 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Smooth Entrance from Sidebar (Left-to-Right luxury glide) */
 @keyframes slideFromSidebar {
-  0% {
-    opacity: 0;
-    transform: translate3d(-48px, 0, 0);
+  from {
+    transform: translate3d(-6px, 0, 0);
   }
-  100% {
-    opacity: 1;
+  to {
     transform: translate3d(0, 0, 0);
   }
 }
 
 .animate-slide-from-sidebar {
-  opacity: 0;
-  animation: slideFromSidebar 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
+  opacity: 1 !important;
+  animation: slideFromSidebar 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Slide drawer from right (Detail panel) */

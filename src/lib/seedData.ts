@@ -214,7 +214,7 @@ Please send your request with your academic transcripts and target institution d
     ogImage: '/prof-portrait.png',
   },
   themeConfig: {
-    primaryColor: '#FFA800',
+    primaryColor: '#0EA5E9',
     paletteColors: [
       '#FFA800',
       '#FFB400',

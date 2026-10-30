@@ -15,7 +15,7 @@ export default async function AdminLayout({
   }
 
   const profile = await getProfile().catch(() => null);
-  const initialColor = profile?.themeConfig?.primaryColor || '#FFA800';
+  const initialColor = profile?.themeConfig?.primaryColor || '#0EA5E9';
 
   return (
     <AdminThemeShell

@@ -218,7 +218,7 @@ const ProfileSchema = new Schema<IProfile>(
       ogImage: { type: String, default: '' },
     },
     themeConfig: {
-      primaryColor: { type: String, default: '#FFA800' },
+      primaryColor: { type: String, default: '#0EA5E9' },
       paletteColors: {
         type: [String],
         default: [

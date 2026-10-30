@@ -3,36 +3,52 @@ import { getProfile, getPublications } from '@/lib/data';
 import PortfolioShell from '@/components/home/PortfolioShell';
 import PortfolioClient from '@/app/portfolio/PortfolioClient';
 
-export const metadata = {
-  title: 'Publications & Scholarly Papers | Prof. Sadiq Iqbal',
-  description:
-    'Peer-reviewed journals, IEEE and Springer conference papers, citations, and preprints by Prof. Sadiq Iqbal in AI, ML, and Telemedicine.',
-  alternates: {
-    canonical: '/publications',
-  },
-  openGraph: {
-    title: 'Publications & Scholarly Research | Prof. Sadiq Iqbal',
+export async function generateMetadata() {
+  const rawProfile = await getProfile();
+  const rawPublications = await getPublications({ limit: 10 });
+  const otherMeta: Record<string, string> = {};
+
+  if (rawPublications && rawPublications.length > 0) {
+    const first = rawPublications[0];
+    otherMeta['citation_title'] = first.title;
+    otherMeta['citation_author'] = first.authors?.[0] || rawProfile.fullName;
+    otherMeta['citation_publication_date'] = first.year ? `${first.year}/01/01` : '2024/01/01';
+    if (first.journalOrPublisher) otherMeta['citation_journal_title'] = first.journalOrPublisher;
+    if (first.doi) otherMeta['citation_doi'] = first.doi.replace(/^https?:\/\/doi\.org\//, '');
+  }
+
+  return {
+    title: 'Publications & Scholarly Papers | Prof. Sadiq Iqbal',
     description:
-      'Explore indexed research publications, journals, conference proceedings, and citations by Prof. Sadiq Iqbal.',
-    url: '/publications',
-    type: 'website',
-    images: [
-      {
-        url: '/prof-portrait.png',
-        width: 1200,
-        height: 630,
-        alt: 'Prof. Sadiq Iqbal Publications Archive',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Publications & Research Papers | Prof. Sadiq Iqbal',
-    description:
-      'Peer-reviewed journals, conference proceedings, and citations by Prof. Sadiq Iqbal.',
-    images: ['/prof-portrait.png'],
-  },
-};
+      'Peer-reviewed journals, IEEE and Springer conference papers, citations, and preprints by Prof. Sadiq Iqbal in AI, ML, and Telemedicine.',
+    alternates: {
+      canonical: '/publications',
+    },
+    openGraph: {
+      title: 'Publications & Scholarly Research | Prof. Sadiq Iqbal',
+      description:
+        'Explore indexed research publications, journals, conference proceedings, and citations by Prof. Sadiq Iqbal.',
+      url: '/publications',
+      type: 'website',
+      images: [
+        {
+          url: '/prof-portrait.png',
+          width: 1200,
+          height: 630,
+          alt: 'Prof. Sadiq Iqbal Publications Archive',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Publications & Research Papers | Prof. Sadiq Iqbal',
+      description:
+        'Peer-reviewed journals, conference proceedings, and citations by Prof. Sadiq Iqbal.',
+      images: ['/prof-portrait.png'],
+    },
+    other: otherMeta,
+  };
+}
 
 export default async function PublicationsPage() {
   const rawProfile = await getProfile();
@@ -62,23 +78,6 @@ export default async function PublicationsPage() {
 
   return (
     <PortfolioShell profile={profile}>
-      {/* Google Scholar Highwire Press Metadata Tags */}
-      <head>
-        {publications.slice(0, 10).map((pub: any, idx: number) => (
-          <React.Fragment key={idx}>
-            <meta name="citation_title" content={pub.title} />
-            <meta name="citation_author" content={pub.authors?.[0] || profile.fullName} />
-            <meta name="citation_publication_date" content={pub.year ? `${pub.year}/01/01` : '2024/01/01'} />
-            {pub.journalOrPublisher && (
-              <meta name="citation_journal_title" content={pub.journalOrPublisher} />
-            )}
-            {pub.doi && (
-              <meta name="citation_doi" content={pub.doi.replace(/^https?:\/\/doi\.org\//, '')} />
-            )}
-          </React.Fragment>
-        ))}
-      </head>
-
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(publicationsJsonLd) }}

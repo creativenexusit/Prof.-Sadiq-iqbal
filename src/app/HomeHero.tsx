@@ -13,10 +13,6 @@ interface HomeHeroProps {
 
 export default function HomeHero({ profile }: HomeHeroProps) {
   const { themeColor } = usePortfolio();
-  const [typewriterText, setTypewriterText] = useState('');
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const fullName = profile?.fullName || 'Prof. Sadiq Iqbal';
   const designation = profile?.designation || 'Chairman, Department of Computer Science & Engineering';
   const institution = profile?.institution || 'Bangladesh University, Dhaka, Bangladesh';
@@ -24,6 +20,10 @@ export default function HomeHero({ profile }: HomeHeroProps) {
     profile?.bio ||
     'Academic leader, educator, and researcher with extensive experience in computer science and engineering. Dedicated to advancing scientific inquiry in Machine Learning, Explainable AI, Network Security, and Telemedicine.';
   const avatarUrl = profile?.avatar?.url || '/prof-sadiq-iqbal.png';
+
+  const [typewriterText, setTypewriterText] = useState(fullName.toUpperCase());
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const phrases = [
     fullName.toUpperCase(),

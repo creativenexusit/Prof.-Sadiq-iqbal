@@ -32,14 +32,14 @@ export interface ThemeColor {
 }
 
 export const COLOR_PALETTES: ThemeColor[] = [
-  { id: 'gold', name: 'Amber Gold', hex: '#FFA800', hoverHex: '#FFB82E' },
-  { id: 'yellow', name: 'Vibrant Yellow', hex: '#FFB400', hoverHex: '#FFC02A' },
-  { id: 'red', name: 'Crimson Red', hex: '#D31A26', hoverHex: '#E52532' },
-  { id: 'green', name: 'Emerald Green', hex: '#10B981', hoverHex: '#059669' },
   { id: 'blue', name: 'Sky Blue', hex: '#0EA5E9', hoverHex: '#0284C7' },
-  { id: 'purple', name: 'Royal Violet', hex: '#8B5CF6', hoverHex: '#7C3AED' },
-  { id: 'pink', name: 'Hot Pink', hex: '#EC4899', hoverHex: '#DB2777' },
   { id: 'cyan', name: 'Cyan Wave', hex: '#06B6D4', hoverHex: '#0891B2' },
+  { id: 'green', name: 'Emerald Green', hex: '#10B981', hoverHex: '#059669' },
+  { id: 'purple', name: 'Royal Violet', hex: '#8B5CF6', hoverHex: '#7C3AED' },
+  { id: 'gold', name: 'Amber Gold', hex: '#FFA800', hoverHex: '#FFB82E' },
+  { id: 'red', name: 'Crimson Red', hex: '#D31A26', hoverHex: '#E52532' },
+  { id: 'pink', name: 'Hot Pink', hex: '#EC4899', hoverHex: '#DB2777' },
+  { id: 'yellow', name: 'Vibrant Yellow', hex: '#FFB400', hoverHex: '#FFC02A' },
 ];
 
 interface PortfolioContextType {
@@ -92,7 +92,7 @@ export default function PortfolioShell({ children, profile }: PortfolioShellProp
 
   // Settings / Color Customizer state
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
-  const adminHex = profile?.themeConfig?.primaryColor || '#FFA800';
+  const adminHex = profile?.themeConfig?.primaryColor || '#0EA5E9';
   const adminPalette = COLOR_PALETTES.find(
     (c) => c.hex.toLowerCase() === adminHex.toLowerCase()
   ) || { id: 'admin', name: 'Admin Theme', hex: adminHex, hoverHex: adminHex };
@@ -184,9 +184,7 @@ export default function PortfolioShell({ children, profile }: PortfolioShellProp
       events: '/events',
     };
     const href = target.startsWith('/') ? target : routeMap[target] || '/';
-    if (pathname !== href) {
-      router.push(href);
-    } else {
+    if (pathname === href) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -322,10 +320,13 @@ export default function PortfolioShell({ children, profile }: PortfolioShellProp
             {mobileBottomBarItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
+              const targetHref = item.href || '/';
               return (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => handleTabChange(item.href || '/')}
+                  href={targetHref}
+                  prefetch={true}
+                  onClick={() => handleTabChange(targetHref)}
                   className={`flex-1 flex items-center justify-center py-2.5 px-2 rounded-full transition-all cursor-pointer active:scale-95 ${
                     isActive
                       ? 'text-black shadow-md font-bold'
@@ -336,7 +337,7 @@ export default function PortfolioShell({ children, profile }: PortfolioShellProp
                   aria-label={item.label}
                 >
                   <Icon size={18} />
-                </button>
+                </Link>
               );
             })}
 
@@ -362,17 +363,20 @@ export default function PortfolioShell({ children, profile }: PortfolioShellProp
               <div className="flex flex-col items-end pt-[50px]">
                 {navItems.map((item) => {
                   const isActive = activeTab === item.id;
+                  const targetHref = item.href || '/';
                   return (
-                    <button
+                    <Link
                       key={item.id}
-                      onClick={() => handleTabChange(item.href || '/')}
+                      href={targetHref}
+                      prefetch={true}
+                      onClick={() => handleTabChange(targetHref)}
                       className={`h-8 mb-2 last:mb-0 flex items-center justify-end text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors cursor-pointer pr-1 drop-shadow-md ${
                         isActive ? '' : 'text-white hover:opacity-70'
                       }`}
                       style={isActive ? { color: themeColor.hex } : undefined}
                     >
                       {item.label}
-                    </button>
+                    </Link>
                   );
                 })}
               </div>
@@ -390,10 +394,13 @@ export default function PortfolioShell({ children, profile }: PortfolioShellProp
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = activeTab === item.id;
+                  const targetHref = item.href || '/';
                   return (
-                    <button
+                    <Link
                       key={item.id}
-                      onClick={() => handleTabChange(item.href || '/')}
+                      href={targetHref}
+                      prefetch={true}
+                      onClick={() => handleTabChange(targetHref)}
                       title={item.label}
                       className={`mb-2 last:mb-0 flex h-8 w-8 items-center justify-center rounded-full transition-all cursor-pointer active:scale-95 ${
                         isActive
@@ -403,7 +410,7 @@ export default function PortfolioShell({ children, profile }: PortfolioShellProp
                       style={isActive ? { backgroundColor: themeColor.hex } : undefined}
                     >
                       <Icon size={15} />
-                    </button>
+                    </Link>
                   );
                 })}
               </div>

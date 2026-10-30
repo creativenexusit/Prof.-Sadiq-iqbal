@@ -67,9 +67,9 @@ export default function OptimizedImage({
   );
 
   if (isCloudinary && avifSrc && webpSrc) {
-    // Use native <picture> for Cloudinary to guarantee format serving
+    // Use native <picture style={{ display: 'contents' }}> for Cloudinary to guarantee format serving without breaking layout/fill
     return (
-      <picture>
+      <picture style={{ display: 'contents' }}>
         <source srcSet={avifSrc} type="image/avif" />
         <source srcSet={webpSrc} type="image/webp" />
         {/* Next.js <Image> as the final fallback — handles layout/sizing */}

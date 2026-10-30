@@ -23,14 +23,14 @@ export interface ThemeColor {
 }
 
 export const ADMIN_COLOR_PALETTES: ThemeColor[] = [
-  { id: 'gold', name: 'Amber Gold', hex: '#FFA800', hoverHex: '#FFB82E' },
-  { id: 'yellow', name: 'Vibrant Yellow', hex: '#FFB400', hoverHex: '#FFC02A' },
-  { id: 'red', name: 'Crimson Red', hex: '#D31A26', hoverHex: '#E52532' },
-  { id: 'green', name: 'Emerald Green', hex: '#10B981', hoverHex: '#059669' },
   { id: 'blue', name: 'Sky Blue', hex: '#0EA5E9', hoverHex: '#0284C7' },
-  { id: 'purple', name: 'Royal Violet', hex: '#8B5CF6', hoverHex: '#7C3AED' },
-  { id: 'pink', name: 'Hot Pink', hex: '#EC4899', hoverHex: '#DB2777' },
   { id: 'cyan', name: 'Cyan Wave', hex: '#06B6D4', hoverHex: '#0891B2' },
+  { id: 'green', name: 'Emerald Green', hex: '#10B981', hoverHex: '#059669' },
+  { id: 'purple', name: 'Royal Violet', hex: '#8B5CF6', hoverHex: '#7C3AED' },
+  { id: 'gold', name: 'Amber Gold', hex: '#FFA800', hoverHex: '#FFB82E' },
+  { id: 'red', name: 'Crimson Red', hex: '#D31A26', hoverHex: '#E52532' },
+  { id: 'pink', name: 'Hot Pink', hex: '#EC4899', hoverHex: '#DB2777' },
+  { id: 'yellow', name: 'Vibrant Yellow', hex: '#FFB400', hoverHex: '#FFC02A' },
 ];
 
 /** Always enforce clean dark mode CSS variables */
@@ -65,9 +65,9 @@ export default function AdminThemeShell({
   children,
   adminEmail,
   fullName,
-  initialColor = '#FFA800',
+  initialColor = '#0EA5E9',
 }: AdminThemeShellProps) {
-  const initialHex = initialColor || '#FFA800';
+  const initialHex = initialColor || '#0EA5E9';
   const defaultPalette = ADMIN_COLOR_PALETTES.find(
     (c) => c.hex.toLowerCase() === initialHex.toLowerCase()
   ) || {

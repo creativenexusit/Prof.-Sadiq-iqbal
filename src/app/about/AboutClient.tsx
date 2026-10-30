@@ -175,7 +175,8 @@ export default function AboutClient({ profile, galleryItems = [] }: AboutClientP
                 src={profile?.avatar?.url || '/prof-portrait.png'}
                 alt="Prof. Sadiq Iqbal — Professor & Chairman, Department of CSE"
                 fill
-                quality={82}
+                priority
+                quality={80}
                 sizes="(max-width: 640px) 256px, 320px"
                 className="object-cover"
               />
