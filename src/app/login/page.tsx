@@ -77,14 +77,6 @@ export default function LoginPage() {
 
             {/* University & Department Titles then BU Logo */}
             <div className="text-center space-y-2">
-              <div>
-                <h2 className="text-lg xl:text-xl font-black tracking-widest uppercase text-black">
-                  BANGLADESH UNIVERSITY
-                </h2>
-                <p className="text-[11px] font-bold tracking-wider text-black/85 uppercase">
-                  Dept. of Computer Science &amp; Engineering
-                </p>
-              </div>
 
               <motion.div
                 initial={{ scale: 0.7, opacity: 0 }}
@@ -102,6 +94,16 @@ export default function LoginPage() {
                   />
                 </div>
               </motion.div>
+              <div>
+                <h2 className="text-lg xl:text-xl font-black tracking-widest uppercase text-black">
+                  BANGLADESH UNIVERSITY
+                </h2>
+                <p className="text-[11px] font-bold tracking-wider text-black/85 uppercase">
+                  Dept. of Computer Science &amp; Engineering
+                </p>
+              </div>
+
+
             </div>
           </div>
 

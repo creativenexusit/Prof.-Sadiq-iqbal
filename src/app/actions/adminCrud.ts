@@ -8,6 +8,8 @@ import { AcademicItem } from '@/models/AcademicItem';
 import { uploadToCloudinary, deleteFromCloudinary, type ImageProfile } from '@/lib/cloudinary';
 import { optimizeUploadedImage, type ImageCategory } from '@/lib/imageOptimizer';
 import { revalidatePath } from 'next/cache';
+import fs from 'fs';
+import path from 'path';
 
 async function checkAuth() {
   const session = await getAdminSession();
@@ -247,8 +249,31 @@ export async function uploadMediaAdmin(formData: FormData) {
       webpUrl: result.webpUrl,
     };
   } catch (error) {
-    console.error('Upload action error:', error);
-    return { success: false, error: 'Failed to upload to Cloudinary' };
+    console.warn('Cloudinary upload failed, using local public/uploads fallback:', error);
+    try {
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+      const ext = isPdf ? 'pdf' : isSvg ? 'svg' : 'webp';
+      const cleanName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+      const finalFileName = cleanName.endsWith(`.${ext}`) ? cleanName : `${cleanName}.${ext}`;
+      const filePath = path.join(uploadsDir, finalFileName);
+      fs.writeFileSync(filePath, buffer);
+
+      return {
+        success: true,
+        url: `/uploads/${finalFileName}`,
+        publicId: `local_${Date.now()}`,
+        fileName: file.name,
+        format: ext,
+        bytes: buffer.length,
+        sizeKB: localOptKB || Number((buffer.length / 1024).toFixed(1)),
+      };
+    } catch (fsErr) {
+      console.error('Local file write error:', fsErr);
+      return { success: false, error: 'Failed to upload media.' };
+    }
   }
 }
 
